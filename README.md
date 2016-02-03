@@ -1,0 +1,1 @@
+Demo app for bullet proof Angular One Way data flow idea
