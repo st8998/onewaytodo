@@ -1,6 +1,11 @@
 import angular from 'angular'
 
-angular.module('todo', [])
+import { serviceName as todoServiceName, default as todoService } from 'todo_service'
 
+import { default as registerTodoListDirective } from 'todo_list'
 
+const app = angular.module('todo', [])
 
+app.service(todoServiceName, todoService)
+
+registerTodoListDirective(app)

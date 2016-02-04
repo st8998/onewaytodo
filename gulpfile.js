@@ -41,11 +41,12 @@ const config = {
   },
   module: {
     loaders: [
+      { loader: 'ng-annotate', test: /\.js$/, exclude: /node_modules/ },
       {
         loader: 'babel-loader',
         test: /\.js$/, exclude: /node_modules/,
         query: {
-          plugins: ['transform-runtime'],
+          plugins: ['transform-runtime', 'add-module-exports'],
           presets: ['stage-0', 'es2015']
         }
       }
