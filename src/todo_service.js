@@ -1,10 +1,9 @@
-export const serviceName = 'todoService'
+export default function register() {
+  return this.service('todoService', /* @ngInject */ function($q) {
+    let promise
 
-export default /* @ngInject */ function($q) {
-
-  let promise
-
-  return {
-    all: ()=> promise || $q.when([{done: false, text: 'Do nothing'}])
-  }
+    return {
+      all: ()=> promise || $q.when([{done: false, text: 'Do nothing'}])
+    }
+  })
 }
