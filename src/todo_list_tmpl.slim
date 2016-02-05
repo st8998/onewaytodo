@@ -1,1 +1,9 @@
-h1 ng-bind="message"
+ul
+  li ng-repeat="todo in todoes"
+    span ng-bind="todo.text"
+    input type="checkbox" ng-checked="todo.done" ng-click="toggleTodo(todo)"
+    button ng-click="deleteTodo(todo)" X
+
+form name="newTodo"
+  input type="text" ng-model="newTodo.text"
+  button ng-click="createNewTodo()" add

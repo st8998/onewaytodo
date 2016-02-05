@@ -6,9 +6,25 @@ export default function register() {
       restrict: 'E',
       template: tmpl,
       link: function(scope) {
-        scope.message = 'Joppa Driller'
+        scope.newTodo = {}
 
-        todoService.all().then(::console.log)
+        scope.$watch(todoService.all, function(todoesPromise) {
+          todoesPromise.then(::console.log)
+          todoesPromise.then(todoes => scope.todoes = todoes)
+        })
+
+        scope.createNewTodo = function() {
+          todoService.create(scope.newTodo)
+          scope.newTodo = {}
+        }
+
+        scope.deleteTodo = todoService.delete
+
+        scope.toggleTodo = function(todo) {
+          todo.done?
+            todoService.markNotDone(todo) :
+            todoService.markDone(todo)
+        }
       }
     }
   })
