@@ -1,4 +1,4 @@
-import { find, propEq, adjust, assoc, append, reject } from 'ramda'
+import { findIndex, propEq, adjust, assoc, append, reject } from 'ramda'
 import guid from 'guid'
 
 export default function register() {
@@ -7,7 +7,7 @@ export default function register() {
 
     const setDoneForTodo = (value)=> (todo)=>
       promise = api.all().then(function(todoes) {
-        const index = find(propEq('id', todo.id))(todoes)
+        const index = findIndex(propEq('id', todo.id), todoes)
         return adjust(assoc('done', value), index, todoes)
       })
 

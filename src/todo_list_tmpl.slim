@@ -1,5 +1,5 @@
 ul
-  li ng-repeat="todo in todoes"
+  li ng-repeat="todo in todoes track by todo.id"
     span ng-bind="todo.text"
     input type="checkbox" ng-checked="todo.done" ng-click="toggleTodo(todo)"
     button ng-click="deleteTodo(todo)" X
