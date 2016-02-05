@@ -7,7 +7,7 @@ const path = require('path')
 const del = require('del')
 const nodemon = require('nodemon')
 const minimist = require('minimist')
-const slim = require('gulp-slim')
+const slm = require('gulp-slm')
 
 const R = require('ramda')
 
@@ -21,7 +21,7 @@ const args = minimist(process.argv.slice(2), {
 // SLIM
 gulp.task('slim', function() {
   gulp.src('./src/*.slim')
-    .pipe(slim({pretty: true}))
+    .pipe(slm({pretty: true}))
     .pipe(gulp.dest('./build/'))
 })
 
@@ -42,6 +42,7 @@ const config = {
   module: {
     loaders: [
       { loader: 'ng-annotate', test: /\.js$/, exclude: /node_modules/ },
+      { loaders: ['html', 'slm'], test: /\.(slm|slim)$/, exclude: /node_modules/ },
       {
         loader: 'babel-loader',
         test: /\.js$/, exclude: /node_modules/,

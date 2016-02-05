@@ -23,10 +23,12 @@
     "del": "^2.2.0",
     "eslint": "^1.10.3",
     "gulp": "^3.9.0",
-    "gulp-slim": "^0.3.0",
+    "gulp-slm": "^1.0.5",
+    "html-loader": "^0.4.0",
     "minimist": "^1.2.0",
     "ng-annotate-loader": "^0.1.0",
     "nodemon": "^1.8.1",
+    "slm-loader": "^0.1.1",
     "webpack": "^1.12.9"
   }
 }
