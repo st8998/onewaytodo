@@ -46,7 +46,7 @@ const config = {
         loader: 'babel-loader',
         test: /\.js$/, exclude: /node_modules/,
         query: {
-          plugins: ['transform-runtime', 'add-module-exports'],
+          plugins: ['transform-runtime'],
           presets: ['stage-0', 'es2015']
         }
       }
