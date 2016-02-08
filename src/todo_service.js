@@ -1,4 +1,4 @@
-import { findIndex, propEq, adjust, assoc, append, reject } from 'ramda'
+import { adjustBy, propEq, assoc, append, reject } from 'ramda'
 import guid from 'guid'
 
 export default function register() {
@@ -6,10 +6,8 @@ export default function register() {
     let promise
 
     const setDoneForTodo = (value)=> (todo)=>
-      promise = api.all().then(function(todoes) {
-        const index = findIndex(propEq('id', todo.id), todoes)
-        return adjust(assoc('done', value), index, todoes)
-      })
+      promise = api.all().then(
+        adjustBy(assoc('done', value), propEq('id', todo.id)))
 
     const api = {
       all: ()=> promise = promise || $q.when([{id: guid(), done: false, text: 'Do nothing'}]),
