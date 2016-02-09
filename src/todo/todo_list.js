@@ -1,4 +1,4 @@
-import tmpl from 'todo_list_tmpl.slim'
+import tmpl from './todo_list_tmpl.slim'
 
 export default function register() {
   return this.directive('todoList', /* @ngInject */ function(todoService) {

@@ -2,21 +2,10 @@
 
 const gulp = require('gulp')
 const webpack = require('webpack')
-const fs = require('fs')
 const path = require('path')
 const del = require('del')
 const nodemon = require('nodemon')
-const minimist = require('minimist')
 const slm = require('gulp-slm')
-
-const R = require('ramda')
-
-// ARGUMENTS
-const args = minimist(process.argv.slice(2), {
-  string: 'file',
-  default: {file: 'main'}
-})
-// ARGUMENTS
 
 // SLIM
 gulp.task('slim', function() {

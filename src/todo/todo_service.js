@@ -1,5 +1,5 @@
 import { adjustBy, propEq, assoc, append, reject } from 'ramda'
-import guid from 'guid'
+import guid from 'misc/guid'
 
 export default function register() {
   return this.service('todoService', /* @ngInject */ function($q) {
