@@ -6,6 +6,7 @@ const path = require('path')
 const del = require('del')
 const nodemon = require('nodemon')
 const slm = require('gulp-slm')
+const karma = require('karma')
 
 // SLIM
 gulp.task('slim', function() {
@@ -22,11 +23,12 @@ gulp.task('slim-watch', ['slim'], function() {
 
 // WEBPACK CONFIG
 const config = {
-  entry: './src/main.js',
+  entry: {main: './src/main.js', test: './test/main_test.js'},
   target: 'web',
+  devtool: 'source-map',
   output: {
     path: path.join(__dirname, 'build'),
-    filename: `main.js`
+    filename: '[name].js'
   },
   module: {
     loaders: [
@@ -54,7 +56,7 @@ const config = {
 
 gulp.task('clean-build', done => del('./build', done))
 
-gulp.task('build', ['clean-build'], function(done) {
+gulp.task('build', function(done) {
   webpack(config).run(function(err) {
     if (err) {
       console.log('Error', err)
@@ -65,7 +67,7 @@ gulp.task('build', ['clean-build'], function(done) {
   })
 })
 
-gulp.task('build-watch', ['build'], function() {
+gulp.task('run', ['build', 'slim-watch'], function() {
   webpack(config).watch(100, function(err) {
     if (err) {
       console.log('Error', err)
@@ -76,4 +78,16 @@ gulp.task('build-watch', ['build'], function() {
   })
 })
 
-gulp.task('run', ['build-watch', 'slim-watch'])
+gulp.task('test', ['build'], function(done) {
+  webpack(config).watch(100, function(err) {
+    if (err) {
+      console.log('Error', err)
+    } else {
+      console.log('Recompilled')
+    }
+  })
+  new karma.Server({
+    configFile: __dirname + '/karma.conf.js'
+  }, done).start()
+})
+
