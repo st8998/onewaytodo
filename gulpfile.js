@@ -7,6 +7,8 @@ const del = require('del')
 const nodemon = require('nodemon')
 const slm = require('gulp-slm')
 const karma = require('karma')
+const protractor = require('gulp-protractor').protractor
+const connect = require('gulp-connect')
 
 // SLIM
 gulp.task('slim', function() {
@@ -23,7 +25,7 @@ gulp.task('slim-watch', ['slim'], function() {
 
 // WEBPACK CONFIG
 const config = {
-  entry: {main: './src/main.js', test: './test/main_test.js'},
+  entry: {main: './src/main.js', spec: './tests/spec/main_spec.js', e2e: './tests/e2e/main_e2e.js'},
   target: 'web',
   devtool: 'source-map',
   output: {
@@ -91,3 +93,22 @@ gulp.task('test', ['build'], function(done) {
   }, done).start()
 })
 
+gulp.task('e2e', ['build', 'slim'], function(done) {
+  connect.server({
+    root: 'build/',
+    port: 8888
+  })
+
+  const args = ['--baseUrl', 'http://127.0.0.1:8888']
+  gulp.src(['./build/e2e.js'])
+    .pipe(protractor({
+      configFile: 'protractor.conf.js',
+      args: args
+    }))
+    .on('error', function(e) {
+      throw e
+    }).once('close', function() {
+      connect.serverClose()
+      done()
+    })
+})

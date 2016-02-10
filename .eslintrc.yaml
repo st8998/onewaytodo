@@ -17,6 +17,7 @@ env:
   es6: true
   node: true
   jasmine: true
+  protractor: true
 
 globals:
   module: false
