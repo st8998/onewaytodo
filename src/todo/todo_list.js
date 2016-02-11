@@ -9,7 +9,6 @@ export default function register() {
         scope.newTodo = {}
 
         scope.$watch(todoService.all, function(todoesPromise) {
-          todoesPromise.then(::console.log)
           todoesPromise.then(todoes => scope.todoes = todoes)
         })
 
@@ -18,7 +17,7 @@ export default function register() {
           scope.newTodo = {}
         }
 
-        scope.deleteTodo = todoService.delete
+        scope.deleteTodo = todoService.remove
 
         scope.toggleTodo = function(todo) {
           todo.done?

@@ -51,7 +51,7 @@ const config = {
   ],
   resolve: {
     extensions: ['', '.js'],
-    modulesDirectories: ['./src', 'node_modules']
+    modulesDirectories: ['./src', './tests', 'node_modules']
   }
 }
 // WEBPACK CONFIG

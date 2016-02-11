@@ -5,7 +5,7 @@ export default function register() {
   return this.service('todoService', /* @ngInject */ function($q) {
     let promise
 
-    const setDoneForTodo = (value)=> (todo)=>
+    const setDoneForTodo = value => todo =>
       promise = api.all().then(
         adjustBy(assoc('done', value), propEq('id', todo.id)))
 
@@ -18,7 +18,7 @@ export default function register() {
 
       create: (attrs)=> promise = api.all().then(append(assoc('id', guid(), attrs))),
 
-      delete: (todo)=> promise = api.all().then(reject(propEq('id', todo.id)))
+      remove: (todo)=> promise = api.all().then(reject(propEq('id', todo.id)))
     }
 
     return api
