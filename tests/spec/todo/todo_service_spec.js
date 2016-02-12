@@ -3,7 +3,7 @@
 import { default as registerTodoService } from 'todo/todo_service'
 
 import { find, findIndex, propEq } from 'ramda'
-import randomString from 'misc/random_string'
+import { default as randomize } from 'randomatic'
 
 
 angular.module('app', [])
@@ -36,7 +36,7 @@ describe('todoService', function() {
 
     function createTodoAndRefetchAllAndThen(testFn) {
       return function(done) {
-        todo = {text: randomString(10)}
+        todo = {text: randomize(10)}
         todoService.create(todo)
 
         todoService.all().then(testFn).finally(done)
