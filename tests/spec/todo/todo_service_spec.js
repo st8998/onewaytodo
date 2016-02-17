@@ -5,24 +5,23 @@ import { default as registerTodoService } from 'todo/todo_service'
 import { find, findIndex, propEq } from 'ramda'
 import { default as randomize } from 'randomatic'
 
-
 angular.module('app', [])
   ::registerTodoService()
 
-describe('todoService', function() {
-
-  let todoService, rootScope
+describe('todoService', function () {
+  let todoService
+  let rootScope
 
   beforeEach(angular.mock.module('app'))
 
-  beforeEach(function() {
-    angular.mock.inject(function(_todoService_, _$rootScope_) {
+  beforeEach(function () {
+    angular.mock.inject(function (_todoService_, _$rootScope_) {
       todoService = _todoService_
       rootScope = _$rootScope_
     })
   })
 
-  it('#all returns collection promise', function(done) {
+  it('#all returns collection promise', function (done) {
     function test(todos) {
       expect(todos).toEqual(jasmine.any(Array))
     }
@@ -31,12 +30,12 @@ describe('todoService', function() {
     rootScope.$digest()
   })
 
-  describe('#create', function() {
+  describe('#create', function () {
     let todo
 
     function createTodoAndRefetchAllAndThen(testFn) {
-      return function(done) {
-        todo = {text: randomize(10)}
+      return function (done) {
+        todo = { text: randomize(10) }
         todoService.create(todo)
 
         todoService.all().then(testFn).finally(done)
@@ -44,19 +43,18 @@ describe('todoService', function() {
       }
     }
 
-    it('adds todo', createTodoAndRefetchAllAndThen(function(todos) {
+    it('adds todo', createTodoAndRefetchAllAndThen(function (todos) {
       expect(findIndex(propEq('text', todo.text), todos)).not.toEqual(-1)
     }))
 
-    it('generates id attribute', createTodoAndRefetchAllAndThen(function(todos) {
+    it('generates id attribute', createTodoAndRefetchAllAndThen(function (todos) {
       const created = find(propEq('text', todo.text), todos)
       expect(created.id).toBeDefined()
     }))
 
-    it('doesn\'t mess with input attrs', createTodoAndRefetchAllAndThen(function(todos) {
+    it('doesn\'t mess with input attrs', createTodoAndRefetchAllAndThen(function (todos) {
       const created = find(propEq('text', todo.text), todos)
       expect(created).not.toBe(todo)
     }))
   })
 })
-

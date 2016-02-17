@@ -11,26 +11,24 @@ const protractor = require('gulp-protractor').protractor
 const connect = require('gulp-connect')
 
 // SLIM
-gulp.task('slim', function() {
+gulp.task('slim', function () {
   gulp.src('./src/*.slim')
-    .pipe(slm({pretty: true}))
+    .pipe(slm({ pretty: true }))
     .pipe(gulp.dest('./build/'))
 })
 
-gulp.task('slim-watch', ['slim'], function() {
+gulp.task('slim-watch', ['slim'], function () {
   gulp.watch('./src/*.slim', ['slim'])
 })
-// SLIM
-
 
 // WEBPACK CONFIG
 const config = {
-  entry: {main: './src/main.js', spec: './tests/spec/main_spec.js', e2e: './tests/e2e/main_e2e.js'},
+  entry: { main: './src/main.js', spec: './tests/spec/main_spec.js', e2e: './tests/e2e/main_e2e.js' },
   target: 'web',
   devtool: 'source-map',
   output: {
     path: path.join(__dirname, 'build'),
-    filename: '[name].js'
+    filename: '[name].js',
   },
   module: {
     loaders: [
@@ -41,25 +39,22 @@ const config = {
         test: /\.js$/, exclude: /node_modules/,
         query: {
           plugins: ['transform-runtime'],
-          presets: ['stage-0', 'es2015']
-        }
-      }
-    ]
+          presets: ['stage-0', 'es2015'],
+        },
+      },
+    ],
   },
-  plugins: [
-    //new webpack.HotModuleReplacementPlugin()
-  ],
+  plugins: [],
   resolve: {
     extensions: ['', '.js'],
-    modulesDirectories: ['./src', './tests', 'node_modules']
-  }
+    modulesDirectories: ['./src', './tests', 'node_modules'],
+  },
 }
-// WEBPACK CONFIG
 
 gulp.task('clean-build', done => del('./build', done))
 
-gulp.task('build', function(done) {
-  webpack(config).run(function(err) {
+gulp.task('build', function (done) {
+  webpack(config).run(function (err) {
     if (err) {
       console.log('Error', err)
     } else {
@@ -69,8 +64,8 @@ gulp.task('build', function(done) {
   })
 })
 
-gulp.task('run', ['build', 'slim-watch'], function() {
-  webpack(config).watch(100, function(err) {
+gulp.task('run', ['build', 'slim-watch'], function () {
+  webpack(config).watch(100, function (err) {
     if (err) {
       console.log('Error', err)
     } else {
@@ -80,34 +75,30 @@ gulp.task('run', ['build', 'slim-watch'], function() {
   })
 })
 
-gulp.task('test', ['build'], function(done) {
-  webpack(config).watch(100, function(err) {
+gulp.task('test', ['build'], function (done) {
+  new karma.Server({ configFile: `${__dirname}/karma.conf.js` }, done).start()
+
+  webpack(config).watch(100, function (err) {
     if (err) {
       console.log('Error', err)
     } else {
       console.log('Recompilled')
     }
   })
-  new karma.Server({
-    configFile: __dirname + '/karma.conf.js'
-  }, done).start()
 })
 
-gulp.task('e2e', ['build', 'slim'], function(done) {
+gulp.task('e2e', ['build', 'slim'], function (done) {
   connect.server({
     root: 'build/',
-    port: 8888
+    port: 8888,
   })
 
   const args = ['--baseUrl', 'http://127.0.0.1:8888']
   gulp.src(['./build/e2e.js'])
-    .pipe(protractor({
-      configFile: 'protractor.conf.js',
-      args: args
-    }))
-    .on('error', function(e) {
+    .pipe(protractor({ configFile: 'protractor.conf.js', args }))
+    .on('error', function (e) {
       throw e
-    }).once('close', function() {
+    }).once('close', function () {
       connect.serverClose()
       done()
     })
