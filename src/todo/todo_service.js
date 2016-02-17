@@ -1,4 +1,5 @@
-import { adjustBy, propEq, assoc, append, reject, merge } from 'ramda'
+import { propEq, assoc, append, reject } from 'ramda'
+import { adjustBy } from 'ramda_ext'
 import guid from 'misc/guid'
 
 export default function register() {
@@ -11,7 +12,7 @@ export default function register() {
       promise = api.all().then(
         adjustBy(assoc('done', value), propEq('id', todo.id)))
 
-    return merge(api, {
+    return Object.assign(api, {
       all: () => promise = promise || $q.when([{ id: guid(), done: false, text: 'Do nothing' }]),
 
       markDone: setDoneForTodo(true),
