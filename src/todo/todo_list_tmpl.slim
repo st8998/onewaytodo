@@ -1,4 +1,4 @@
-ul
+ul.todo-list
   li ng-repeat="todo in todoes track by todo.id"
     span ng-bind="todo.text"
     input type="checkbox" ng-checked="todo.done" ng-click="toggleTodo(todo)"

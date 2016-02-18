@@ -7,8 +7,8 @@ const del = require('del')
 const nodemon = require('nodemon')
 const slm = require('gulp-slm')
 const karma = require('karma')
-const protractor = require('gulp-protractor').protractor
 const connect = require('gulp-connect')
+const childProcess = require('child_process')
 
 // SLIM
 gulp.task('slim', function () {
@@ -87,6 +87,12 @@ gulp.task('test', ['build'], function (done) {
   })
 })
 
+function getProtractorBinary(binaryName) {
+  const pkgPath = require.resolve('protractor')
+  const protractorDir = path.resolve(path.join(path.dirname(pkgPath), '..', 'bin'))
+  return path.join(protractorDir, binaryName)
+}
+
 gulp.task('e2e', ['build', 'slim'], function (done) {
   connect.server({
     root: 'build/',
@@ -94,12 +100,12 @@ gulp.task('e2e', ['build', 'slim'], function (done) {
   })
 
   const args = ['--baseUrl', 'http://127.0.0.1:8888']
-  gulp.src(['./build/e2e.js'])
-    .pipe(protractor({ configFile: 'protractor.conf.js', args }))
-    .on('error', function (e) {
-      throw e
-    }).once('close', function () {
-      connect.serverClose()
-      done()
-    })
+
+  webpack(config).watch(100, function (err) {
+    if (err) {
+      console.log('Error', err)
+    } else {
+      childProcess.spawn(getProtractorBinary('protractor'), args, { stdio: 'inherit' })
+    }
+  })
 })
